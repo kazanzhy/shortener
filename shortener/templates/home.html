@@ -2,12 +2,19 @@
 
 {% block content %} 
 
-<h1>Home Page</h1> 
+<h1>Shortener</h1> 
 
-{% if user %}
-    <h3>Hello, {{user.nickname}}</h3> 
-{% else %}
-    <h3>Hello, anonymous</h3> 
-{% endif %}
+<form action="" method="post" name="home">
 
+    <p><label class="col-form-label">Please enter your link:</label></p>
+
+    <p>{{ form.link(size=60) }} <input type="submit" value="Generate"></p>
+
+</form>
+<p>
+{% if code %} Your shortlink: http://{{ host }}/{{ code }}{% endif %}
+</p>
 {% endblock %}
+
+
+
