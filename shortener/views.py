@@ -6,30 +6,50 @@ from .forms import *
 from .additions import get_code, generate_code
 from .config import HOST
 
-@app.route('/', methods = ['GET', 'POST'])
-def home():
-    form = MainForm(request.form)
-    if request.method == 'POST' and form.validate():
-        link = form.link.data
-        code = get_code(session, link)
-        return render_template('home.html', form = form, code = code, host = HOST)
-    return render_template('home.html', form = form)
-
 
 @app.route('/admin')
 def admin():
     abort(401)
 
 
+@app.route('/signup')
+def signup():
+    # 
+    return redirect(url_for('home'))
+
+
+@app.route('/login')
+def login():
+    #
+    return redirect(url_for('home'))
+
+
+@app.route('/logout')
+def logout():
+    return redirect(url_for('home'))
+
+
 @app.route('/<code>')
 def redirection(code):
     query = session.query(Link).filter_by(code=code).first() 
     if query is not None:
-        if '://' not in query.link:
-            query.link = 'http://' + query.link
+        query.redirects += 1
+        session.commit()
         return redirect(query.link)
     else:
         abort(404)
+
+
+@app.route('/', methods = ['GET', 'POST'])
+def home():
+    form = MainForm(request.form)
+    if '://' not in form.link.data:
+        form.link.data = 'http://' + form.link.data
+    if request.method == 'POST' and form.validate():
+        link = form.link.data
+        code = get_code(session, link)
+        return render_template('home.html', form = form, code = code, host = HOST)
+    return render_template('home.html', form = form)
 
 
 @app.errorhandler(401)

@@ -2,18 +2,21 @@
 
 {% block content %} 
 
-<h1>Shortener</h1> 
-
 <form action="" method="post" name="home">
 
     <p><label class="col-form-label">Please enter your link:</label></p>
 
     <p>{{ form.link(size=60) }} <input type="submit" value="Generate"></p>
 
+    <p>{% for error in form.errors.link %}<span style="color: red;">[{{error}}]</span>{% endfor %}</p>
+
+    {% if code %}
+    <p><label class="col-form-label">Your shortlink:</label></p>
+    <p>http://{{ host }}/{{ code }}</p>
+    {% endif %}
+
 </form>
-<p>
-{% if code %} Your shortlink: http://{{ host }}/{{ code }}{% endif %}
-</p>
+
 {% endblock %}
 
 

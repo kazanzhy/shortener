@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from .config import SQLALCHEMY_DATABASE_URI
-
+#import config
 
 # Database
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
